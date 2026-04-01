@@ -5,7 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fruit Miner</title>
 </head>
-<body <body style="margin:0; font-family:Arial; text-align:center; padding:20px;">
+<body <body style="
+margin:0;
+font-family:Arial;
+text-align:center;
+padding:20px;
+background: linear-gradient(to bottom, #a8e063, #56ab2f);
+color:#222;
+">
+
+<style>
+.tree {
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+button {
+  border:none;
+  border-radius:10px;
+  padding:10px 15px;
+}
+</style>
 
 <h1>🌳 Fruit Miner</h1>
 
@@ -40,7 +62,20 @@ function render() {
   treesDiv.innerHTML = '';
 
   trees.forEach((tree, index) => {
-    const btn = document.createElement('button');
+    const card = document.createElement('div');
+card.className = 'tree';
+
+const btn = document.createElement('button');
+btn.innerText = tree === 'apple' ? '🍎 Собрать' : '🍊 Собрать';
+
+btn.onclick = () => {
+  if (tree === 'apple') balance += 0.01;
+  if (tree === 'orange') balance += 0.05;
+  render();
+};
+
+card.appendChild(btn);
+treesDiv.appendChild(card);
     btn.innerText = tree === 'apple' ? '🍎 Собрать' : '🍊 Собрать';
     btn.style.margin = '5px';
 
