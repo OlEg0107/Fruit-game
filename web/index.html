@@ -5,10 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fruit Miner</title>
 </head>
-<body style="margin:0; font-family:Arial, sans-serif; text-align:center; padding:30px;">
-  <h1>🌳 Fruit Miner</h1>
-  <p id="balance" style="font-size:24px;">Баланс: 0 TON</p>
+<body <body style="margin:0; font-family:Arial; text-align:center; padding:20px;">
 
+<h1>🌳 Fruit Miner</h1>
+
+<p id="balance" style="font-size:24px;">Баланс: 0 TON</p>
+
+<h2>Твои деревья:</h2>
+
+<div id="trees"></div>
+
+<hr>
+
+<h2>Магазин:</h2>
+
+<button onclick="buyTree('apple')" style="padding:10px; margin:5px;">
+🍎 Яблоня (бесплатно)
+</button>
+
+<button onclick="buyTree('orange')" style="padding:10px; margin:5px;">
+🍊 Апельсин (1 TON)
+</button>
+
+<script>
+let balance = 0;
+let trees = [];
+
+// обновление экрана
+function render() {
+  document.getElementById('balance').innerText = 
+    Баланс: ${balance.toFixed(2)} TON;
+
+  const treesDiv = document.getElementById('trees');
+  treesDiv.innerHTML = '';
+
+  trees.forEach((tree, index) => {
+    const btn = document.createElement('button');
+    btn.innerText = tree === 'apple' ? '🍎 Собрать' : '🍊 Собрать';
+    btn.style.margin = '5px';
+
+    btn.onclick = () => {
+      if (tree === 'apple') balance += 0.01;
+      if (tree === 'orange') balance += 0.05;
+      render();
+    };
+
+    treesDiv.appendChild(btn);
+  });
+}
+
+// покупка дерева
+function buyTree(type) {
+  if (type === 'apple') {
+    trees.push('apple');
+  }
+
+  if (type === 'orange') {
+    if (balance >= 1) {
+      balance -= 1;
+      trees.push('orange');
+    } else {
+      alert('Недостаточно TON');
+    }
+  }
+
+  render();
+}
+
+// старт
+render();
+</script>
+
+</body>
   <button
     onclick="collectApple()"
     style="font-size:20px; padding:12px 24px; border:none; border-radius:12px; cursor:pointer;"
