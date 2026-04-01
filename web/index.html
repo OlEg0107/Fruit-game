@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fruit Miner</title>
+</head>
+<body style="margin:0; font-family:Arial, sans-serif; text-align:center; padding:30px;">
+  <h1>🌳 Fruit Miner</h1>
+  <p id="balance" style="font-size:24px;">Баланс: 0 TON</p>
+
+  <button
+    onclick="collectApple()"
+    style="font-size:20px; padding:12px 24px; border:none; border-radius:12px; cursor:pointer;"
+  >
+    🍎 Собрать яблоки
+  </button>
+
+  <script>
+    let balance = 0;
+
+    function collectApple() {
+      balance += 0.01;
+      document.getElementById('balance').innerText = 'Баланс: ' + balance.toFixed(2) + ' TON';
+    }
+  </script>
+</body>
+</html>
