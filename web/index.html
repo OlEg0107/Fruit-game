@@ -146,22 +146,22 @@
   treesDiv.appendChild(card);
 });
 
-    function buyTree(type) {
-      if (type === 'apple') {
-        trees.push('apple');
-      }
+  function buyTree(type) {
+  if (type === 'apple') {
+    trees.push({ type: 'apple' });
+  }
 
-      if (type === 'orange') {
-        if (balance >= 1) {
-          balance -= 1;
-          trees.push('orange');
-        } else {
-          alert('Недостаточно TON');
-        }
-      }
-
-      render();
+  if (type === 'orange') {
+    if (balance >= 1) {
+      balance -= 1;
+      trees.push({ type: 'orange' });
+    } else {
+      alert('Недостаточно TON');
     }
+  }
+
+  render();
+}
 
     render();
   </script>
