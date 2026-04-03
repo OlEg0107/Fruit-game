@@ -100,7 +100,9 @@
 
   <script>
     let balance = 0;
-    let trees = ['apple'];
+    let trees = [
+  { type: 'apple' }
+];
 
     function render() {
       document.getElementById('balance').innerText =
@@ -114,34 +116,35 @@
         return;
       }
 
-      trees.forEach((tree) => {
-        const card = document.createElement('div');
-        card.className = 'tree';
+      trees.forEach((treeObj) => {
+  const tree = treeObj.type;
 
-        const title = document.createElement('h3');
-        title.innerText = tree === 'apple' ? '🍎 Яблоня' : '🍊 Апельсин';
+  const card = document.createElement('div');
+  card.className = 'tree';
 
-        const income = document.createElement('p');
-        income.innerText =
-          tree === 'apple' ? '+0.01 TON за сбор' : '+0.05 TON за сбор';
+  const title = document.createElement('h3');
+  title.innerText = tree === 'apple' ? '🍎 Яблоня' : '🍊 Апельсин';
 
-        const btn = document.createElement('button');
-        btn.innerText =
-          tree === 'apple' ? '🍎 Собрать яблоки' : '🍊 Собрать апельсины';
+  const income = document.createElement('p');
+  income.innerText =
+    tree === 'apple' ? '+0.01 TON за сбор' : '+0.05 TON за сбор';
 
-        btn.onclick = () => {
-          if (tree === 'apple') balance += 0.01;
-          if (tree === 'orange') balance += 0.05;
-          render();
-        };
+  const btn = document.createElement('button');
+  btn.innerText =
+    tree === 'apple' ? '🍎 Собрать яблоки' : '🍊 Собрать апельсины';
 
-        card.appendChild(title);
-        card.appendChild(income);
-        card.appendChild(btn);
+  btn.onclick = () => {
+    if (tree === 'apple') balance += 0.01;
+    if (tree === 'orange') balance += 0.05;
+    render();
+  };
 
-        treesDiv.appendChild(card);
-      });
-    }
+  card.appendChild(title);
+  card.appendChild(income);
+  card.appendChild(btn);
+
+  treesDiv.appendChild(card);
+});
 
     function buyTree(type) {
       if (type === 'apple') {
