@@ -125,48 +125,47 @@
     let lastCollected = JSON.parse(localStorage.getItem('lastCollected')) || {};
 
     const treeTypes = {
-      apple: {
-        emoji: '🍎',
-        name: 'Яблоня',
-        price: 0,
-        reward: 0.01,
-        cooldownHours: 1,
-        buttonText: 'Собрать яблоки'
-      },
-      orange: {
-        emoji: '🍊',
-        name: 'Апельсин',
-        price: 10,
-        reward: 0.05,
-        cooldownHours: 3,
-        buttonText: 'Собрать апельсины'
-      },
-      grape: {
-        emoji: '🍇',
-        name: 'Виноград',
-        price: 30,
-        reward: 0.375,
-        cooldownHours: 6,
-        buttonText: 'Собрать виноград'
-      },
-      banana: {
-        emoji: '🍌',
-        name: 'Банан',
-        price: 50,
-        reward: 1.66,
-        cooldownHours: 12,
-        buttonText: 'Собрать бананы'
-      },
-      lemon: {
-        emoji: '🍋',
-        name: 'Лимон',
-        price: 100,
-        reward: 10,
-        cooldownHours: 24,
-        buttonText: 'Собрать лимоны'
-      }
-    };
-
+  apple: {
+    emoji: '🍎',
+    name: 'Яблоня',
+    price: 0,
+    reward: 0.01,
+    cooldownHours: 1,
+    buttonText: 'Собрать яблоки'
+  },
+  orange: {
+    emoji: '🍊',
+    name: 'Апельсин',
+    price: 10,
+    reward: 0.05,
+    cooldownHours: 3,
+    buttonText: 'Собрать апельсины'
+  },
+  grape: {
+    emoji: '🍇',
+    name: 'Виноград',
+    price: 30,
+    reward: 0.375,
+    cooldownHours: 6,
+    buttonText: 'Собрать виноград'
+  },
+  banana: {
+    emoji: '🍌',
+    name: 'Банан',
+    price: 50,
+    reward: 1.66,
+    cooldownHours: 12,
+    buttonText: 'Собрать бананы'
+  },
+  lemon: {
+    emoji: '🍋',
+    name: 'Лимон',
+    price: 100,
+    reward: 10,
+    cooldownHours: 24,
+    buttonText: 'Собрать лимоны'
+  }
+};
     function formatTime(ms) {
       const totalSeconds = Math.ceil(ms / 1000);
       const hours = Math.floor(totalSeconds / 3600);
@@ -177,26 +176,24 @@
     }
 
     function renderShop() {
-      const shopDiv = document.getElementById('shop');
-      shopDiv.innerHTML = '';
+  const shopDiv = document.getElementById('shop');
+  shopDiv.innerHTML = '';
 
-      Object.keys(treeTypes).forEach((type) => {
-        const info = treeTypes[type];
+  Object.keys(treeTypes).forEach((type) => {
+    // ❗ пропускаем яблоню
+    if (type === 'apple') return;
 
-        const btn = document.createElement('button');
-        btn.className = 'shop-button';
+    const info = treeTypes[type];
 
-        if (info.price === 0) {
-          btn.innerText = `${info.emoji} ${info.name} (бесплатно)`;
-        } else {
-          btn.innerText = `${info.emoji} ${info.name} (${info.price} TON)`;
-        }
+    const btn = document.createElement('button');
+    btn.className = 'shop-button';
+    btn.innerText = `${info.emoji} ${info.name} (${info.price} TON)`;
 
-        btn.onclick = () => buyTree(type);
+    btn.onclick = () => buyTree(type);
 
-        shopDiv.appendChild(btn);
-      });
-    }
+    shopDiv.appendChild(btn);
+  });
+}
 
     function render() {
       document.getElementById('balance').innerText =
@@ -296,21 +293,23 @@
     }
 
     function buyTree(type) {
-      const info = treeTypes[type];
+  // ❗ запрет покупки яблони
+  if (type === 'apple') {
+    alert('Яблоня даётся только один раз при старте');
+    return;
+  }
 
-      if (info.price === 0) {
-        trees.push({ type });
-      } else {
-        if (balance >= info.price) {
-          balance -= info.price;
-          trees.push({ type });
-        } else {
-          alert('Недостаточно TON');
-        }
-      }
+  const info = treeTypes[type];
 
-      render();
-    }
+  if (balance >= info.price) {
+    balance -= info.price;
+    trees.push({ type });
+  } else {
+    alert('Недостаточно TON');
+  }
+
+  render();
+}
 
     render();
     setInterval(render, 1000);
