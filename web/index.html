@@ -99,11 +99,11 @@
   </button>
 
   <script>
-    let balance = 0;
+   let balance = Number(localStorage.getItem('balance')) || 0;
 
-    let trees = [
-      { type: 'apple' }
-    ];
+let trees = JSON.parse(localStorage.getItem('trees')) || [
+  { type: 'apple' }
+];
 
     function render() {
       document.getElementById('balance').innerText =
@@ -146,6 +146,8 @@
 
         treesDiv.appendChild(card);
       });
+      localStorage.setItem('balance', balance);
+      localStorage.setItem('trees', JSON.stringify(trees));
     }
 
     function buyTree(type) {
