@@ -66,7 +66,13 @@
 
     .tree-income {
       font-size: 18px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
+    }
+
+    .tree-price {
+      font-size: 17px;
+      margin-bottom: 10px;
+      color: #444;
     }
 
     button {
@@ -85,7 +91,7 @@
 
     .shop-button {
       display: inline-block;
-      min-width: 220px;
+      min-width: 260px;
       background: #ffffff;
     }
 
@@ -107,14 +113,7 @@
   <hr>
 
   <h2>Магазин:</h2>
-
-  <button class="shop-button" onclick="buyTree('apple')">
-    🍎 Яблоня (бесплатно)
-  </button>
-
-  <button class="shop-button" onclick="buyTree('orange')">
-    🍊 Апельсин (1 TON)
-  </button>
+  <div id="shop"></div>
 
   <script>
     let balance = Number(localStorage.getItem('balance')) || 0;
@@ -123,107 +122,150 @@
       { type: 'apple' }
     ];
 
-    function getTreeInfo(type) {
-      if (type === 'apple') {
-        return {
-          emoji: '🍎',
-          name: 'Яблоня',
-          reward: 0.01,
-          buttonText: 'Собрать яблоки'
-        };
+    const treeTypes = {
+      apple: {
+        emoji: '🍎',
+        name: 'Яблоня',
+        price: 0,
+        reward: 0.01,
+        buttonText: 'Собрать яблоки'
+      },
+      orange: {
+        emoji: '🍊',
+        name: 'Апельсин',
+        price: 10,
+        reward: 0.05,
+        buttonText: 'Собрать апельсины'
+      },
+      grape: {
+        emoji: '🍇',
+        name: 'Виноград',
+        price: 30,
+        reward: 0.375,
+        buttonText: 'Собрать виноград'
+      },
+      banana: {
+        emoji: '🍌',
+        name: 'Банан',
+        price: 50,
+        reward: 1.66,
+        buttonText: 'Собрать бананы'
+      },
+      lemon: {
+        emoji: '🍋',
+        name: 'Лимон',
+        price: 100,
+        reward: 10,
+        buttonText: 'Собрать лимоны'
       }
+    };
 
-      if (type === 'orange') {
-        return {
-          emoji: '🍊',
-          name: 'Апельсин',
-          reward: 0.05,
-          buttonText: 'Собрать апельсины'
-        };
-      }
+    function renderShop() {
+      const shopDiv = document.getElementById('shop');
+      shopDiv.innerHTML = '';
+
+      Object.keys(treeTypes).forEach((type) => {
+        const info = treeTypes[type];
+
+        const btn = document.createElement('button');
+        btn.className = 'shop-button';
+
+        if (info.price === 0) {
+          btn.innerText = `${info.emoji} ${info.name} (бесплатно)`;
+        } else {
+          btn.innerText = `${info.emoji} ${info.name} (${info.price} TON)`;
+        }
+
+        btn.onclick = () => buyTree(type);
+
+        shopDiv.appendChild(btn);
+      });
     }
 
     function render() {
       document.getElementById('balance').innerText =
-        'Баланс: ' + balance.toFixed(2) + ' TON';
+        'Баланс: ' + balance.toFixed(3) + ' TON';
 
       const treesDiv = document.getElementById('trees');
       treesDiv.innerHTML = '';
 
       if (trees.length === 0) {
         treesDiv.innerHTML = '<p>У тебя пока нет деревьев</p>';
-        return;
+      } else {
+        const groupedTrees = {};
+
+        trees.forEach((treeObj) => {
+          const type = treeObj.type;
+          if (!groupedTrees[type]) {
+            groupedTrees[type] = 0;
+          }
+          groupedTrees[type]++;
+        });
+
+        Object.keys(groupedTrees).forEach((type) => {
+          const info = treeTypes[type];
+          const count = groupedTrees[type];
+
+          const card = document.createElement('div');
+          card.className = 'tree-card';
+
+          const emoji = document.createElement('div');
+          emoji.className = 'tree-emoji';
+          emoji.innerText = info.emoji;
+
+          const title = document.createElement('div');
+          title.className = 'tree-title';
+          title.innerText = info.name;
+
+          const treeCount = document.createElement('div');
+          treeCount.className = 'tree-count';
+          treeCount.innerText = 'Количество: ' + count;
+
+          const income = document.createElement('div');
+          income.className = 'tree-income';
+          income.innerText =
+            '+' + info.reward + ' TON за 1 дерево';
+
+          const total = document.createElement('div');
+          total.className = 'tree-income';
+          total.innerText =
+            'За сбор всех: +' + (count * info.reward).toFixed(3) + ' TON';
+
+          const btn = document.createElement('button');
+          btn.className = 'collect-button';
+          btn.innerText = info.emoji + ' ' + info.buttonText;
+
+          btn.onclick = () => {
+            balance += count * info.reward;
+            render();
+          };
+
+          card.appendChild(emoji);
+          card.appendChild(title);
+          card.appendChild(treeCount);
+          card.appendChild(income);
+          card.appendChild(total);
+          card.appendChild(btn);
+
+          treesDiv.appendChild(card);
+        });
       }
-
-      const groupedTrees = {};
-
-      trees.forEach((treeObj) => {
-        const type = treeObj.type;
-        if (!groupedTrees[type]) {
-          groupedTrees[type] = 0;
-        }
-        groupedTrees[type]++;
-      });
-
-      Object.keys(groupedTrees).forEach((type) => {
-        const info = getTreeInfo(type);
-        const count = groupedTrees[type];
-
-        const card = document.createElement('div');
-        card.className = 'tree-card';
-
-        const emoji = document.createElement('div');
-        emoji.className = 'tree-emoji';
-        emoji.innerText = info.emoji;
-
-        const title = document.createElement('div');
-        title.className = 'tree-title';
-        title.innerText = info.name;
-
-        const treeCount = document.createElement('div');
-        treeCount.className = 'tree-count';
-        treeCount.innerText = 'Количество: ' + count;
-
-        const income = document.createElement('div');
-        income.className = 'tree-income';
-        income.innerText =
-          '+' + info.reward.toFixed(2) + ' TON за 1 дерево';
-
-        const total = document.createElement('div');
-        total.className = 'tree-income';
-        total.innerText =
-          'За сбор всех: +' + (count * info.reward).toFixed(2) + ' TON';
-
-        const btn = document.createElement('button');
-        btn.className = 'collect-button';
-        btn.innerText = info.emoji + ' ' + info.buttonText;
-
-        btn.onclick = () => {
-          balance += count * info.reward;
-          render();
-        };
-
-        card.appendChild(emoji);
-        card.appendChild(title);
-        card.appendChild(treeCount);
-        card.appendChild(income);
-        card.appendChild(total);
-        card.appendChild(btn);
-
-        treesDiv.appendChild(card);
-      });
 
       localStorage.setItem('balance', balance);
       localStorage.setItem('trees', JSON.stringify(trees));
+
+      renderShop();
     }
 
     function buyTree(type) {
-      if (type === 'apple') {
-        trees.push({ type: 'apple' });
-      } else if (type === 'orange') {
-        if (balance >= 1) {
-          balance -= 1;
-          trees.push({ type: 'orange' });
+      const info = treeTypes[type];
+
+      if (info.price === 0) {
+        trees.push({ type });
+      } else {
+        if (balance >= info.price) {
+          balance -= info.price;
+          trees.push({ type });
         } else {
           alert('Недостаточно TON');
         }
