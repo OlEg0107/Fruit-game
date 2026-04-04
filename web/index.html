@@ -69,10 +69,10 @@
       margin-bottom: 10px;
     }
 
-    .tree-price {
-      font-size: 17px;
-      margin-bottom: 10px;
-      color: #444;
+    .tree-timer {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #555;
     }
 
     button {
@@ -122,12 +122,15 @@
       { type: 'apple' }
     ];
 
+    let lastCollected = JSON.parse(localStorage.getItem('lastCollected')) || {};
+
     const treeTypes = {
       apple: {
         emoji: '🍎',
         name: 'Яблоня',
         price: 0,
         reward: 0.01,
+        cooldownHours: 1,
         buttonText: 'Собрать яблоки'
       },
       orange: {
@@ -135,6 +138,7 @@
         name: 'Апельсин',
         price: 10,
         reward: 0.05,
+        cooldownHours: 3,
         buttonText: 'Собрать апельсины'
       },
       grape: {
@@ -142,6 +146,7 @@
         name: 'Виноград',
         price: 30,
         reward: 0.375,
+        cooldownHours: 6,
         buttonText: 'Собрать виноград'
       },
       banana: {
@@ -149,6 +154,7 @@
         name: 'Банан',
         price: 50,
         reward: 1.66,
+        cooldownHours: 12,
         buttonText: 'Собрать бананы'
       },
       lemon: {
@@ -156,9 +162,19 @@
         name: 'Лимон',
         price: 100,
         reward: 10,
+        cooldownHours: 24,
         buttonText: 'Собрать лимоны'
       }
     };
+
+    function formatTime(ms) {
+      const totalSeconds = Math.ceil(ms / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      return `${hours}ч ${minutes}м ${seconds}с`;
+    }
 
     function renderShop() {
       const shopDiv = document.getElementById('shop');
@@ -223,28 +239,49 @@
 
           const income = document.createElement('div');
           income.className = 'tree-income';
-          income.innerText =
-            '+' + info.reward + ' TON за 1 дерево';
+          income.innerText = '+' + info.reward + ' TON за 1 дерево';
 
           const total = document.createElement('div');
           total.className = 'tree-income';
           total.innerText =
             'За сбор всех: +' + (count * info.reward).toFixed(3) + ' TON';
 
+          const timer = document.createElement('div');
+          timer.className = 'tree-timer';
+
           const btn = document.createElement('button');
           btn.className = 'collect-button';
-          btn.innerText = info.emoji + ' ' + info.buttonText;
 
-          btn.onclick = () => {
-            balance += count * info.reward;
-            render();
-          };
+          const now = Date.now();
+          const cooldownMs = info.cooldownHours * 60 * 60 * 1000;
+          const lastTime = lastCollected[type] || 0;
+          const nextAvailable = lastTime + cooldownMs;
+
+          if (now >= nextAvailable) {
+            timer.innerText = 'Можно собирать сейчас';
+            btn.innerText = info.emoji + ' ' + info.buttonText;
+
+            btn.onclick = () => {
+              balance += count * info.reward;
+              lastCollected[type] = Date.now();
+              render();
+            };
+          } else {
+            const timeLeft = nextAvailable - now;
+            timer.innerText = 'Осталось: ' + formatTime(timeLeft);
+            btn.innerText = '⏳ Ждём';
+
+            btn.onclick = () => {
+              alert('Ещё рано собирать. ' + timer.innerText);
+            };
+          }
 
           card.appendChild(emoji);
           card.appendChild(title);
           card.appendChild(treeCount);
           card.appendChild(income);
           card.appendChild(total);
+          card.appendChild(timer);
           card.appendChild(btn);
 
           treesDiv.appendChild(card);
@@ -253,6 +290,7 @@
 
       localStorage.setItem('balance', balance);
       localStorage.setItem('trees', JSON.stringify(trees));
+      localStorage.setItem('lastCollected', JSON.stringify(lastCollected));
 
       renderShop();
     }
@@ -275,6 +313,7 @@
     }
 
     render();
+    setInterval(render, 1000);
   </script>
 </body>
 </html>
