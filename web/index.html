@@ -104,33 +104,11 @@
       color: #203319;
     }
 
-    .horizontal-scroll {
-      display: flex;
-      gap: 14px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .horizontal-scroll::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    .horizontal-scroll::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.45);
-      border-radius: 10px;
-    }
-
     .tree-card {
-      min-width: 330px;
-      max-width: 330px;
       background: rgba(255, 255, 255, 0.96);
       border-radius: 24px;
       padding: 18px 16px;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
-      scroll-snap-align: start;
-      flex-shrink: 0;
     }
 
     .shop-card {
@@ -204,7 +182,8 @@
 
     .tree-button:active,
     .shop-button:active,
-    .nav-button:active {
+    .nav-button:active,
+    .arrow-button:active {
       transform: scale(0.98);
     }
 
@@ -245,6 +224,54 @@
     .hidden {
       display: none;
     }
+
+    .carousel-wrap {
+      position: relative;
+      min-height: 320px;
+      touch-action: pan-y;
+    }
+
+    .carousel-card {
+      width: 100%;
+    }
+
+    .carousel-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .arrow-button {
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .dot.active {
+      background: #2f6e1f;
+      transform: scale(1.15);
+    }
   </style>
 </head>
 <body>
@@ -283,6 +310,9 @@
 
   <script>
     let currentScreen = 'garden';
+    let currentTreeIndex = 0;
+    let touchStartX = 0;
+    let touchEndX = 0;
 
     let balance = Number(localStorage.getItem('balance')) || 0;
 
@@ -368,6 +398,70 @@
       }
     }
 
+    function getGroupedTrees() {
+      const groupedTrees = {};
+
+      trees.forEach((treeObj) => {
+        const type = treeObj.type;
+        if (!groupedTrees[type]) {
+          groupedTrees[type] = 0;
+        }
+        groupedTrees[type]++;
+      });
+
+      return Object.keys(groupedTrees).map((type) => ({
+        type,
+        count: groupedTrees[type]
+      }));
+    }
+
+    function prevTree() {
+      const grouped = getGroupedTrees();
+      if (grouped.length <= 1) return;
+
+      currentTreeIndex--;
+      if (currentTreeIndex < 0) {
+        currentTreeIndex = grouped.length - 1;
+      }
+
+      renderGarden();
+    }
+
+    function nextTree() {
+      const grouped = getGroupedTrees();
+      if (grouped.length <= 1) return;
+
+      currentTreeIndex++;
+      if (currentTreeIndex >= grouped.length) {
+        currentTreeIndex = 0;
+      }
+
+      renderGarden();
+    }
+
+    function attachSwipe(element) {
+      element.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      element.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+    }
+
+    function handleSwipe() {
+      const diff = touchEndX - touchStartX;
+
+      if (Math.abs(diff) < 50) return;
+
+      if (diff < 0) {
+        nextTree();
+      } else {
+        prevTree();
+      }
+    }
+
     function renderShop() {
       const shopDiv = document.getElementById('shop');
       shopDiv.innerHTML = '';
@@ -421,104 +515,132 @@
       const treesDiv = document.getElementById('trees');
       treesDiv.innerHTML = '';
 
-      if (trees.length === 0) {
+      const grouped = getGroupedTrees();
+
+      if (grouped.length === 0) {
         treesDiv.innerHTML = '<div class="empty-box">У тебя пока нет деревьев</div>';
         return;
       }
 
-      const groupedTrees = {};
+      if (currentTreeIndex >= grouped.length) {
+        currentTreeIndex = grouped.length - 1;
+      }
 
-      trees.forEach((treeObj) => {
-        const type = treeObj.type;
-        if (!groupedTrees[type]) {
-          groupedTrees[type] = 0;
-        }
-        groupedTrees[type]++;
-      });
+      const currentTree = grouped[currentTreeIndex];
+      const info = treeTypes[currentTree.type];
+      const count = currentTree.count;
 
-      const scroll = document.createElement('div');
-      scroll.className = 'horizontal-scroll';
+      const wrap = document.createElement('div');
+      wrap.className = 'carousel-wrap';
 
-      Object.keys(groupedTrees).forEach((type) => {
-        const info = treeTypes[type];
-        const count = groupedTrees[type];
+      const card = document.createElement('div');
+      card.className = 'tree-card carousel-card';
 
-        const card = document.createElement('div');
-        card.className = 'tree-card';
+      const top = document.createElement('div');
+      top.className = 'tree-top';
 
-        const top = document.createElement('div');
-        top.className = 'tree-top';
+      const emoji = document.createElement('div');
+      emoji.className = 'tree-emoji';
+      emoji.innerText = info.emoji;
 
-        const emoji = document.createElement('div');
-        emoji.className = 'tree-emoji';
-        emoji.innerText = info.emoji;
+      const infoWrap = document.createElement('div');
+      infoWrap.className = 'tree-info';
 
-        const infoWrap = document.createElement('div');
-        infoWrap.className = 'tree-info';
+      const name = document.createElement('div');
+      name.className = 'tree-name';
+      name.innerText = info.name;
 
-        const name = document.createElement('div');
-        name.className = 'tree-name';
-        name.innerText = info.name;
+      const treeCount = document.createElement('div');
+      treeCount.className = 'tree-count';
+      treeCount.innerText = 'Количество: ' + count;
 
-        const treeCount = document.createElement('div');
-        treeCount.className = 'tree-count';
-        treeCount.innerText = 'Количество: ' + count;
+      const income = document.createElement('div');
+      income.className = 'tree-reward';
+      income.innerText = '+' + info.reward + ' TON за 1 дерево';
 
-        const income = document.createElement('div');
-        income.className = 'tree-reward';
-        income.innerText = '+' + info.reward + ' TON за 1 дерево';
+      const total = document.createElement('div');
+      total.className = 'tree-total';
+      total.innerText = 'За сбор всех: +' + (count * info.reward).toFixed(3) + ' TON';
 
-        const total = document.createElement('div');
-        total.className = 'tree-total';
-        total.innerText = 'За сбор всех: +' + (count * info.reward).toFixed(3) + ' TON';
+      const timer = document.createElement('div');
+      timer.className = 'tree-timer';
 
-        const timer = document.createElement('div');
-        timer.className = 'tree-timer';
+      infoWrap.appendChild(name);
+      infoWrap.appendChild(treeCount);
+      infoWrap.appendChild(income);
+      infoWrap.appendChild(total);
+      infoWrap.appendChild(timer);
 
-        infoWrap.appendChild(name);
-        infoWrap.appendChild(treeCount);
-        infoWrap.appendChild(income);
-        infoWrap.appendChild(total);
-        infoWrap.appendChild(timer);
+      top.appendChild(emoji);
+      top.appendChild(infoWrap);
 
-        top.appendChild(emoji);
-        top.appendChild(infoWrap);
+      const btn = document.createElement('button');
+      btn.className = 'tree-button';
 
-        const btn = document.createElement('button');
-        btn.className = 'tree-button';
+      const now = Date.now();
+      const cooldownMs = info.cooldownHours * 60 * 60 * 1000;
+      const lastTime = lastCollected[currentTree.type] || 0;
+      const nextAvailable = lastTime + cooldownMs;
 
-        const now = Date.now();
-        const cooldownMs = info.cooldownHours * 60 * 60 * 1000;
-        const lastTime = lastCollected[type] || 0;
-        const nextAvailable = lastTime + cooldownMs;
+      if (now >= nextAvailable) {
+        timer.innerText = 'Можно собирать сейчас';
+        btn.innerText = info.emoji + ' ' + info.buttonText;
 
-        if (now >= nextAvailable) {
-          timer.innerText = 'Можно собирать сейчас';
-          btn.innerText = info.emoji + ' ' + info.buttonText;
+        btn.onclick = () => {
+          balance += count * info.reward;
+          lastCollected[currentTree.type] = Date.now();
+          render();
+        };
+      } else {
+        const timeLeft = nextAvailable - now;
+        timer.innerText = 'Осталось: ' + formatTime(timeLeft);
+        btn.innerText = '⏳ Ждём';
+        btn.classList.add('waiting');
 
-          btn.onclick = () => {
-            balance += count * info.reward;
-            lastCollected[type] = Date.now();
-            render();
-          };
-        } else {
-          const timeLeft = nextAvailable - now;
-          timer.innerText = 'Осталось: ' + formatTime(timeLeft);
-          btn.innerText = '⏳ Ждём';
-          btn.classList.add('waiting');
+        btn.onclick = () => {
+          alert('Ещё рано собирать. ' + timer.innerText);
+        };
+      }
 
-          btn.onclick = () => {
-            alert('Ещё рано собирать. ' + timer.innerText);
-          };
-        }
+      card.appendChild(top);
+      card.appendChild(btn);
+      wrap.appendChild(card);
+      attachSwipe(wrap);
 
-        card.appendChild(top);
-        card.appendChild(btn);
+      treesDiv.appendChild(wrap);
 
-        scroll.appendChild(card);
-      });
+      if (grouped.length > 1) {
+        const controls = document.createElement('div');
+        controls.className = 'carousel-controls';
 
-      treesDiv.appendChild(scroll);
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'arrow-button';
+        prevBtn.innerText = '←';
+        prevBtn.onclick = prevTree;
+
+        const dots = document.createElement('div');
+        dots.className = 'dots';
+
+        grouped.forEach((_, index) => {
+          const dot = document.createElement('div');
+          dot.className = 'dot';
+          if (index === currentTreeIndex) {
+            dot.classList.add('active');
+          }
+          dots.appendChild(dot);
+        });
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'arrow-button';
+        nextBtn.innerText = '→';
+        nextBtn.onclick = nextTree;
+
+        controls.appendChild(prevBtn);
+        controls.appendChild(dots);
+        controls.appendChild(nextBtn);
+
+        treesDiv.appendChild(controls);
+      }
     }
 
     function render() {
