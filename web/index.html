@@ -3,117 +3,225 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fruit Miner</title>
+  <title>GoldenTrees</title>
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-      background: linear-gradient(to bottom, #b7e97b, #61b832);
-      color: #1f1f1f;
-      min-height: 100vh;
+    * {
       box-sizing: border-box;
     }
 
-    h1 {
-      margin-top: 10px;
-      margin-bottom: 20px;
-      font-size: 42px;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        linear-gradient(180deg, #dff6b3 0%, #8fd14f 45%, #63b82f 100%);
+      color: #1d2a1a;
+      min-height: 100vh;
+      padding: 18px 16px 40px;
     }
 
-    h2 {
-      margin-top: 28px;
-      margin-bottom: 14px;
-      font-size: 28px;
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
     }
 
-    #balance {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 24px;
-    }
-
-    #trees {
-      margin-bottom: 20px;
-    }
-
-    .tree-card {
+    .header-card {
       background: rgba(255, 255, 255, 0.95);
-      border-radius: 22px;
-      padding: 18px;
-      margin: 14px auto;
-      max-width: 340px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+      border-radius: 28px;
+      padding: 24px 20px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      margin-bottom: 18px;
+      text-align: center;
     }
 
-    .tree-emoji {
-      font-size: 46px;
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .title-icon {
+      font-size: 38px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.1;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 15px;
+      color: #5d6d57;
+    }
+
+    .balance-box {
+      margin-top: 18px;
+      background: linear-gradient(135deg, #f7ffe8, #ebffd0);
+      border-radius: 20px;
+      padding: 16px;
+      border: 2px solid rgba(120, 176, 64, 0.18);
+    }
+
+    .balance-label {
+      font-size: 15px;
+      color: #5b6d52;
       margin-bottom: 8px;
     }
 
-    .tree-title {
+    .balance-value {
+      font-size: 34px;
+      font-weight: 800;
+      color: #23351e;
+    }
+
+    .section-title {
       font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 8px;
+      font-weight: 800;
+      margin: 26px 0 14px;
+      text-align: center;
+      color: #203319;
     }
 
-    .tree-count {
-      font-size: 18px;
-      margin-bottom: 8px;
+    .tree-card,
+    .shop-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 24px;
+      padding: 18px 16px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+      margin-bottom: 14px;
     }
 
-    .tree-income {
-      font-size: 18px;
-      margin-bottom: 10px;
+    .tree-top,
+    .shop-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
     }
 
+    .tree-emoji,
+    .shop-emoji {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      background: linear-gradient(135deg, #eefadb, #d8f1b4);
+      flex-shrink: 0;
+    }
+
+    .tree-info,
+    .shop-info {
+      flex: 1;
+    }
+
+    .tree-name,
+    .shop-name {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .tree-count,
+    .shop-price,
+    .tree-reward,
+    .tree-total,
     .tree-timer {
       font-size: 16px;
-      margin-bottom: 12px;
-      color: #555;
+      color: #4f5f49;
+      margin-top: 4px;
     }
 
-    button {
+    .tree-total {
+      font-weight: 700;
+      color: #355028;
+    }
+
+    .tree-button,
+    .shop-button {
+      margin-top: 16px;
+      width: 100%;
       border: none;
-      border-radius: 14px;
-      padding: 12px 18px;
+      border-radius: 16px;
+      padding: 14px 16px;
       font-size: 18px;
+      font-weight: 700;
       cursor: pointer;
-      background: #f3f3f3;
-      margin: 6px;
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    .collect-button {
-      background: #eef3ff;
+    .tree-button:active,
+    .shop-button:active {
+      transform: scale(0.98);
+    }
+
+    .tree-button {
+      background: linear-gradient(135deg, #5dbb45, #3f972d);
+      color: white;
+      box-shadow: 0 6px 14px rgba(63, 151, 45, 0.28);
+    }
+
+    .tree-button.waiting {
+      background: linear-gradient(135deg, #ececf7, #d9d9e8);
+      color: #56606a;
+      box-shadow: none;
     }
 
     .shop-button {
-      display: inline-block;
-      min-width: 260px;
-      background: #ffffff;
+      background: linear-gradient(135deg, #fff7dd, #ffe8a3);
+      color: #5a4300;
+      box-shadow: 0 6px 14px rgba(255, 199, 74, 0.24);
     }
 
-    hr {
-      border: none;
-      border-top: 2px solid rgba(255, 255, 255, 0.55);
-      margin: 28px 0;
+    .empty-box {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 22px;
+      padding: 20px;
+      text-align: center;
+      color: #516149;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(30, 45, 22, 0.72);
     }
   </style>
 </head>
 <body>
-  <h1>🌳 Fruit Miner</h1>
+  <div class="container">
+    <div class="header-card">
+      <div class="title-row">
+        <div class="title-icon">🌳</div>
+        <h1>GoldenTrees</h1>
+      </div>
+      <p class="subtitle">Собирай TON с деревьев и расширяй свой сад</p>
 
-  <p id="balance">Баланс: 0 TON</p>
+      <div class="balance-box">
+        <div class="balance-label">Твой баланс</div>
+        <div class="balance-value" id="balance">0 TON</div>
+      </div>
+    </div>
 
-  <h2>Твои деревья:</h2>
-  <div id="trees"></div>
+    <div class="section-title">Твои деревья</div>
+    <div id="trees"></div>
 
-  <hr>
+    <div class="section-title">Магазин</div>
+    <div id="shop"></div>
 
-  <h2>Магазин:</h2>
-  <div id="shop"></div>
+    <div class="footer-note">
+      Заходи вовремя и собирай доход вручную 🌿
+    </div>
+  </div>
 
   <script>
     let balance = Number(localStorage.getItem('balance')) || 0;
@@ -125,47 +233,48 @@
     let lastCollected = JSON.parse(localStorage.getItem('lastCollected')) || {};
 
     const treeTypes = {
-  apple: {
-    emoji: '🍎',
-    name: 'Яблоня',
-    price: 0,
-    reward: 0.01,
-    cooldownHours: 1,
-    buttonText: 'Собрать яблоки'
-  },
-  orange: {
-    emoji: '🍊',
-    name: 'Апельсин',
-    price: 10,
-    reward: 0.05,
-    cooldownHours: 3,
-    buttonText: 'Собрать апельсины'
-  },
-  grape: {
-    emoji: '🍇',
-    name: 'Виноград',
-    price: 30,
-    reward: 0.375,
-    cooldownHours: 6,
-    buttonText: 'Собрать виноград'
-  },
-  banana: {
-    emoji: '🍌',
-    name: 'Банан',
-    price: 50,
-    reward: 1.66,
-    cooldownHours: 12,
-    buttonText: 'Собрать бананы'
-  },
-  lemon: {
-    emoji: '🍋',
-    name: 'Лимон',
-    price: 100,
-    reward: 10,
-    cooldownHours: 24,
-    buttonText: 'Собрать лимоны'
-  }
-};
+      apple: {
+        emoji: '🍎',
+        name: 'Яблоня',
+        price: 0,
+        reward: 0.01,
+        cooldownHours: 1,
+        buttonText: 'Собрать яблоки'
+      },
+      orange: {
+        emoji: '🍊',
+        name: 'Апельсин',
+        price: 10,
+        reward: 0.05,
+        cooldownHours: 3,
+        buttonText: 'Собрать апельсины'
+      },
+      grape: {
+        emoji: '🍇',
+        name: 'Виноград',
+        price: 30,
+        reward: 0.375,
+        cooldownHours: 6,
+        buttonText: 'Собрать виноград'
+      },
+      banana: {
+        emoji: '🍌',
+        name: 'Банан',
+        price: 50,
+        reward: 1.66,
+        cooldownHours: 12,
+        buttonText: 'Собрать бананы'
+      },
+      lemon: {
+        emoji: '🍋',
+        name: 'Лимон',
+        price: 100,
+        reward: 10,
+        cooldownHours: 24,
+        buttonText: 'Собрать лимоны'
+      }
+    };
+
     function formatTime(ms) {
       const totalSeconds = Math.ceil(ms / 1000);
       const hours = Math.floor(totalSeconds / 3600);
@@ -176,34 +285,63 @@
     }
 
     function renderShop() {
-  const shopDiv = document.getElementById('shop');
-  shopDiv.innerHTML = '';
+      const shopDiv = document.getElementById('shop');
+      shopDiv.innerHTML = '';
 
-  Object.keys(treeTypes).forEach((type) => {
-    // ❗ пропускаем яблоню
-    if (type === 'apple') return;
+      Object.keys(treeTypes).forEach((type) => {
+        if (type === 'apple') return;
 
-    const info = treeTypes[type];
+        const info = treeTypes[type];
 
-    const btn = document.createElement('button');
-    btn.className = 'shop-button';
-    btn.innerText = `${info.emoji} ${info.name} (${info.price} TON)`;
+        const card = document.createElement('div');
+        card.className = 'shop-card';
 
-    btn.onclick = () => buyTree(type);
+        const top = document.createElement('div');
+        top.className = 'shop-top';
 
-    shopDiv.appendChild(btn);
-  });
-}
+        const emoji = document.createElement('div');
+        emoji.className = 'shop-emoji';
+        emoji.innerText = info.emoji;
+
+        const infoWrap = document.createElement('div');
+        infoWrap.className = 'shop-info';
+
+        const name = document.createElement('div');
+        name.className = 'shop-name';
+        name.innerText = info.name;
+
+        const price = document.createElement('div');
+        price.className = 'shop-price';
+        price.innerText = `Цена: ${info.price} TON`;
+
+        infoWrap.appendChild(name);
+        infoWrap.appendChild(price);
+
+        top.appendChild(emoji);
+        top.appendChild(infoWrap);
+
+        const btn = document.createElement('button');
+        btn.className = 'shop-button';
+        btn.innerText = `${info.emoji} Купить`;
+
+        btn.onclick = () => buyTree(type);
+
+        card.appendChild(top);
+        card.appendChild(btn);
+
+        shopDiv.appendChild(card);
+      });
+    }
 
     function render() {
       document.getElementById('balance').innerText =
-        'Баланс: ' + balance.toFixed(3) + ' TON';
+        balance.toFixed(3) + ' TON';
 
       const treesDiv = document.getElementById('trees');
       treesDiv.innerHTML = '';
 
       if (trees.length === 0) {
-        treesDiv.innerHTML = '<p>У тебя пока нет деревьев</p>';
+        treesDiv.innerHTML = '<div class="empty-box">У тебя пока нет деревьев</div>';
       } else {
         const groupedTrees = {};
 
@@ -222,32 +360,46 @@
           const card = document.createElement('div');
           card.className = 'tree-card';
 
+          const top = document.createElement('div');
+          top.className = 'tree-top';
+
           const emoji = document.createElement('div');
           emoji.className = 'tree-emoji';
           emoji.innerText = info.emoji;
 
-          const title = document.createElement('div');
-          title.className = 'tree-title';
-          title.innerText = info.name;
+          const infoWrap = document.createElement('div');
+          infoWrap.className = 'tree-info';
+
+          const name = document.createElement('div');
+          name.className = 'tree-name';
+          name.innerText = info.name;
 
           const treeCount = document.createElement('div');
           treeCount.className = 'tree-count';
           treeCount.innerText = 'Количество: ' + count;
 
           const income = document.createElement('div');
-          income.className = 'tree-income';
+          income.className = 'tree-reward';
           income.innerText = '+' + info.reward + ' TON за 1 дерево';
 
           const total = document.createElement('div');
-          total.className = 'tree-income';
-          total.innerText =
-            'За сбор всех: +' + (count * info.reward).toFixed(3) + ' TON';
+          total.className = 'tree-total';
+          total.innerText = 'За сбор всех: +' + (count * info.reward).toFixed(3) + ' TON';
 
           const timer = document.createElement('div');
           timer.className = 'tree-timer';
 
+          infoWrap.appendChild(name);
+          infoWrap.appendChild(treeCount);
+          infoWrap.appendChild(income);
+          infoWrap.appendChild(total);
+          infoWrap.appendChild(timer);
+
+          top.appendChild(emoji);
+          top.appendChild(infoWrap);
+
           const btn = document.createElement('button');
-          btn.className = 'collect-button';
+          btn.className = 'tree-button';
 
           const now = Date.now();
           const cooldownMs = info.cooldownHours * 60 * 60 * 1000;
@@ -267,18 +419,14 @@
             const timeLeft = nextAvailable - now;
             timer.innerText = 'Осталось: ' + formatTime(timeLeft);
             btn.innerText = '⏳ Ждём';
+            btn.classList.add('waiting');
 
             btn.onclick = () => {
               alert('Ещё рано собирать. ' + timer.innerText);
             };
           }
 
-          card.appendChild(emoji);
-          card.appendChild(title);
-          card.appendChild(treeCount);
-          card.appendChild(income);
-          card.appendChild(total);
-          card.appendChild(timer);
+          card.appendChild(top);
           card.appendChild(btn);
 
           treesDiv.appendChild(card);
@@ -293,23 +441,22 @@
     }
 
     function buyTree(type) {
-  // ❗ запрет покупки яблони
-  if (type === 'apple') {
-    alert('Яблоня даётся только один раз при старте');
-    return;
-  }
+      if (type === 'apple') {
+        alert('Яблоня даётся только один раз при старте');
+        return;
+      }
 
-  const info = treeTypes[type];
+      const info = treeTypes[type];
 
-  if (balance >= info.price) {
-    balance -= info.price;
-    trees.push({ type });
-  } else {
-    alert('Недостаточно TON');
-  }
+      if (balance >= info.price) {
+        balance -= info.price;
+        trees.push({ type });
+      } else {
+        alert('Недостаточно TON');
+      }
 
-  render();
-}
+      render();
+    }
 
     render();
     setInterval(render, 1000);
