@@ -107,7 +107,7 @@
     .tree-card {
       background: rgba(255, 255, 255, 0.96);
       border-radius: 24px;
-      padding: 18px 16px;
+      padding: 18px 16px 20px;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
     }
 
@@ -119,47 +119,116 @@
       margin-bottom: 14px;
     }
 
-    .tree-top,
-    .shop-top {
+    .tree-layout {
       display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 14px;
-      text-align: left;
     }
 
-    .tree-emoji,
-    .shop-emoji {
-      width: 62px;
-      height: 62px;
-      border-radius: 18px;
+    .tree-scene {
+      position: relative;
+      width: 230px;
+      height: 230px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      font-size: 34px;
-      background: linear-gradient(135deg, #eefadb, #d8f1b4);
-      flex-shrink: 0;
+      align-items: flex-end;
+      margin-top: 4px;
     }
 
-    .tree-info,
-    .shop-info {
-      flex: 1;
+    .tree-visual {
+      position: relative;
+      width: 170px;
+      height: 200px;
+      transform-origin: bottom center;
+      animation: sway 3.5s ease-in-out infinite;
     }
 
-    .tree-name,
-    .shop-name {
-      font-size: 24px;
+    .tree-trunk {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 90px;
+      background: linear-gradient(180deg, #8b5a2b, #6c431b);
+      border-radius: 12px;
+      z-index: 2;
+    }
+
+    .tree-base {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 24px;
+      background: rgba(71, 125, 38, 0.18);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .tree-crown {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 128px;
+      height: 110px;
+      border-radius: 50%;
+      z-index: 1;
+      box-shadow: inset 0 -10px 18px rgba(0,0,0,0.08);
+    }
+
+    .tree-crown::before,
+    .tree-crown::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: inherit;
+    }
+
+    .tree-crown::before {
+      width: 92px;
+      height: 92px;
+      left: -18px;
+      top: 18px;
+    }
+
+    .tree-crown::after {
+      width: 92px;
+      height: 92px;
+      right: -18px;
+      top: 20px;
+    }
+
+    .fruit {
+      position: absolute;
+      font-size: 20px;
+      z-index: 3;
+      animation: fruitPulse 2.2s ease-in-out infinite;
+    }
+
+    .fruit.f1 { top: 38px; left: 48px; animation-delay: 0s; }
+    .fruit.f2 { top: 52px; right: 42px; animation-delay: 0.3s; }
+    .fruit.f3 { top: 76px; left: 35px; animation-delay: 0.6s; }
+    .fruit.f4 { top: 84px; right: 30px; animation-delay: 0.9s; }
+    .fruit.f5 { top: 100px; left: 70px; animation-delay: 1.2s; }
+
+    .tree-name {
+      font-size: 30px;
       font-weight: 800;
-      margin-bottom: 4px;
+      margin-top: 4px;
     }
 
     .tree-count,
-    .shop-price,
     .tree-reward,
     .tree-total,
     .tree-timer {
-      font-size: 16px;
+      font-size: 18px;
       color: #4f5f49;
       margin-top: 4px;
+      text-align: center;
     }
 
     .tree-total {
@@ -169,7 +238,7 @@
 
     .tree-button,
     .shop-button {
-      margin-top: 16px;
+      margin-top: 12px;
       width: 100%;
       border: none;
       border-radius: 16px;
@@ -205,6 +274,41 @@
       box-shadow: 0 6px 14px rgba(255, 199, 74, 0.24);
     }
 
+    .shop-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .shop-emoji {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      background: linear-gradient(135deg, #eefadb, #d8f1b4);
+      flex-shrink: 0;
+    }
+
+    .shop-info {
+      flex: 1;
+    }
+
+    .shop-name {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .shop-price {
+      font-size: 16px;
+      color: #4f5f49;
+      margin-top: 4px;
+    }
+
     .empty-box {
       background: rgba(255, 255, 255, 0.85);
       border-radius: 22px;
@@ -227,7 +331,7 @@
 
     .carousel-wrap {
       position: relative;
-      min-height: 320px;
+      min-height: 470px;
       touch-action: pan-y;
     }
 
@@ -271,6 +375,18 @@
     .dot.active {
       background: #2f6e1f;
       transform: scale(1.15);
+    }
+
+    @keyframes sway {
+      0% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+      100% { transform: rotate(-2deg); }
+    }
+
+    @keyframes fruitPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
@@ -325,43 +441,53 @@
     const treeTypes = {
       apple: {
         emoji: '🍎',
+        fruitEmoji: '🍎',
         name: 'Яблоня',
         price: 0,
         reward: 0.01,
         cooldownHours: 1,
-        buttonText: 'Собрать яблоки'
+        buttonText: 'Собрать яблоки',
+        crown: 'linear-gradient(135deg, #72c94b, #4c9b2d)'
       },
       orange: {
         emoji: '🍊',
+        fruitEmoji: '🍊',
         name: 'Апельсин',
         price: 10,
         reward: 0.05,
         cooldownHours: 3,
-        buttonText: 'Собрать апельсины'
+        buttonText: 'Собрать апельсины',
+        crown: 'linear-gradient(135deg, #78c153, #3f8d2c)'
       },
       grape: {
         emoji: '🍇',
+        fruitEmoji: '🍇',
         name: 'Виноград',
         price: 30,
         reward: 0.375,
         cooldownHours: 6,
-        buttonText: 'Собрать виноград'
+        buttonText: 'Собрать виноград',
+        crown: 'linear-gradient(135deg, #63b65b, #327f46)'
       },
       banana: {
         emoji: '🍌',
+        fruitEmoji: '🍌',
         name: 'Банан',
         price: 50,
         reward: 1.66,
         cooldownHours: 12,
-        buttonText: 'Собрать бананы'
+        buttonText: 'Собрать бананы',
+        crown: 'linear-gradient(135deg, #8ad16b, #57a13a)'
       },
       lemon: {
         emoji: '🍋',
+        fruitEmoji: '🍋',
         name: 'Лимон',
         price: 100,
         reward: 10,
         cooldownHours: 24,
-        buttonText: 'Собрать лимоны'
+        buttonText: 'Собрать лимоны',
+        crown: 'linear-gradient(135deg, #98d85e, #5fa62f)'
       }
     };
 
@@ -452,7 +578,6 @@
 
     function handleSwipe() {
       const diff = touchEndX - touchStartX;
-
       if (Math.abs(diff) < 50) return;
 
       if (diff < 0) {
@@ -460,6 +585,38 @@
       } else {
         prevTree();
       }
+    }
+
+    function createTreeVisual(info) {
+      const scene = document.createElement('div');
+      scene.className = 'tree-scene';
+
+      const visual = document.createElement('div');
+      visual.className = 'tree-visual';
+
+      const crown = document.createElement('div');
+      crown.className = 'tree-crown';
+      crown.style.background = info.crown;
+
+      const trunk = document.createElement('div');
+      trunk.className = 'tree-trunk';
+
+      const base = document.createElement('div');
+      base.className = 'tree-base';
+
+      for (let i = 1; i <= 5; i++) {
+        const fruit = document.createElement('div');
+        fruit.className = `fruit f${i}`;
+        fruit.innerText = info.fruitEmoji;
+        visual.appendChild(fruit);
+      }
+
+      visual.appendChild(crown);
+      visual.appendChild(trunk);
+      scene.appendChild(base);
+      scene.appendChild(visual);
+
+      return scene;
     }
 
     function renderShop() {
@@ -536,15 +693,10 @@
       const card = document.createElement('div');
       card.className = 'tree-card carousel-card';
 
-      const top = document.createElement('div');
-      top.className = 'tree-top';
+      const layout = document.createElement('div');
+      layout.className = 'tree-layout';
 
-      const emoji = document.createElement('div');
-      emoji.className = 'tree-emoji';
-      emoji.innerText = info.emoji;
-
-      const infoWrap = document.createElement('div');
-      infoWrap.className = 'tree-info';
+      const scene = createTreeVisual(info);
 
       const name = document.createElement('div');
       name.className = 'tree-name';
@@ -564,15 +716,6 @@
 
       const timer = document.createElement('div');
       timer.className = 'tree-timer';
-
-      infoWrap.appendChild(name);
-      infoWrap.appendChild(treeCount);
-      infoWrap.appendChild(income);
-      infoWrap.appendChild(total);
-      infoWrap.appendChild(timer);
-
-      top.appendChild(emoji);
-      top.appendChild(infoWrap);
 
       const btn = document.createElement('button');
       btn.className = 'tree-button';
@@ -602,8 +745,15 @@
         };
       }
 
-      card.appendChild(top);
-      card.appendChild(btn);
+      layout.appendChild(scene);
+      layout.appendChild(name);
+      layout.appendChild(treeCount);
+      layout.appendChild(income);
+      layout.appendChild(total);
+      layout.appendChild(timer);
+      layout.appendChild(btn);
+
+      card.appendChild(layout);
       wrap.appendChild(card);
       attachSwipe(wrap);
 
@@ -674,7 +824,13 @@
     }
 
     render();
-    setInterval(render, 1000);
+    setInterval(() => {
+      if (currentScreen === 'garden') {
+        renderGarden();
+      } else {
+        document.getElementById('balance').innerText = balance.toFixed(3) + ' TON';
+      }
+    }, 1000);
   </script>
 </body>
 </html>
