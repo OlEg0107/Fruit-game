@@ -8,6 +8,7 @@
   <style>
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -15,17 +16,17 @@
       font-family: Arial, sans-serif;
       color: #1d2a1a;
       min-height: 100vh;
-      padding: 18px 16px 40px;
+      padding: 14px 14px 34px;
       background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.45), transparent 22%),
-        radial-gradient(circle at top right, rgba(255,255,255,0.35), transparent 20%),
-        linear-gradient(180deg, #c9efff 0%, #dff6b3 24%, #8fd14f 58%, #63b82f 100%);
+        radial-gradient(circle at top left, rgba(255,255,255,0.6), transparent 24%),
+        radial-gradient(circle at top right, rgba(255,255,255,0.35), transparent 22%),
+        linear-gradient(180deg, #c9efff 0%, #dff6b3 22%, #90d456 56%, #62b42f 100%);
       overflow-x: hidden;
     }
 
     .sky-cloud {
       position: fixed;
-      background: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.68);
       border-radius: 999px;
       filter: blur(1px);
       z-index: 0;
@@ -34,203 +35,214 @@
     }
 
     .cloud-1 {
-      width: 110px;
+      width: 120px;
       height: 34px;
-      top: 24px;
-      left: -120px;
-      animation-duration: 28s;
+      top: 22px;
+      left: -140px;
+      animation-duration: 34s;
     }
 
     .cloud-2 {
-      width: 90px;
+      width: 96px;
       height: 28px;
-      top: 84px;
-      left: -100px;
-      animation-duration: 34s;
-      animation-delay: -10s;
+      top: 76px;
+      left: -110px;
+      animation-duration: 42s;
+      animation-delay: -12s;
     }
 
     .cloud-3 {
-      width: 130px;
-      height: 38px;
-      top: 58px;
-      left: -140px;
-      animation-duration: 40s;
-      animation-delay: -18s;
+      width: 136px;
+      height: 40px;
+      top: 54px;
+      left: -160px;
+      animation-duration: 48s;
+      animation-delay: -22s;
     }
 
     .container {
       position: relative;
       z-index: 1;
-      max-width: 420px;
+      max-width: 430px;
       margin: 0 auto;
     }
 
     .top-bar {
       display: flex;
       justify-content: flex-start;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .nav-button {
       border: none;
       border-radius: 16px;
       padding: 12px 16px;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       background: rgba(255, 255, 255, 0.95);
       color: #29451d;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-      transition: transform 0.15s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .nav-button:active {
+      transform: scale(0.98);
     }
 
     .header-card {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.94);
       border-radius: 28px;
-      padding: 24px 20px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
-      margin-bottom: 18px;
+      padding: 20px 18px 18px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+      margin-bottom: 16px;
       text-align: center;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
     }
 
     .title-row {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 10px;
+      margin-bottom: 8px;
     }
 
     .title-icon {
-      font-size: 38px;
+      font-size: 34px;
     }
 
     h1 {
       margin: 0;
-      font-size: 32px;
+      font-size: 30px;
       line-height: 1.1;
       font-weight: 800;
     }
 
     .subtitle {
       margin: 0;
-      font-size: 15px;
-      color: #5d6d57;
+      font-size: 14px;
+      color: #65745d;
     }
 
     .balance-box {
-      margin-top: 18px;
-      background: linear-gradient(135deg, #f7ffe8, #ebffd0);
-      border-radius: 20px;
-      padding: 16px;
-      border: 2px solid rgba(120, 176, 64, 0.18);
-      box-shadow: inset 0 2px 10px rgba(255,255,255,0.35);
+      margin-top: 16px;
+      background: linear-gradient(135deg, #f9ffe9, #eeffd1);
+      border-radius: 22px;
+      padding: 14px 16px;
+      border: 1px solid rgba(120, 176, 64, 0.16);
+      box-shadow: inset 0 2px 10px rgba(255,255,255,0.36);
     }
 
     .balance-label {
-      font-size: 15px;
-      color: #5b6d52;
-      margin-bottom: 8px;
+      font-size: 14px;
+      color: #647459;
+      margin-bottom: 6px;
     }
 
     .balance-value {
-      font-size: 34px;
+      font-size: 32px;
       font-weight: 800;
-      color: #23351e;
+      color: #22351d;
     }
 
     .section-title {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 800;
-      margin: 26px 0 14px;
+      margin: 20px 0 12px;
       text-align: center;
       color: #203319;
     }
 
     .tree-card {
       background: rgba(255, 255, 255, 0.96);
-      border-radius: 24px;
-      padding: 18px 16px 20px;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+      border-radius: 28px;
+      padding: 16px 14px 18px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
       overflow: hidden;
+      min-height: 490px;
     }
 
     .shop-card {
       background: rgba(255, 255, 255, 0.96);
       border-radius: 24px;
-      padding: 18px 16px;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
-      margin-bottom: 14px;
+      padding: 16px 14px;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.13);
+      margin-bottom: 12px;
     }
 
     .tree-layout {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
     }
 
     .tree-scene {
       position: relative;
-      width: 250px;
-      height: 240px;
+      width: 100%;
+      height: 290px;
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      margin-top: 4px;
+      margin-top: 2px;
       user-select: none;
+      overflow: hidden;
     }
 
     .tree-visual {
       position: relative;
-      width: 180px;
-      height: 210px;
+      width: 200px;
+      height: 245px;
       transform-origin: bottom center;
-      animation: sway 3.5s ease-in-out infinite;
-      transition: transform 0.25s ease;
+      animation: sway 4.8s ease-in-out infinite;
+      transition: transform 0.35s ease, filter 0.35s ease;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,0.14));
     }
 
     .tree-visual.collecting {
-      animation: collectBounce 0.5s ease;
+      animation: collectBounce 0.85s cubic-bezier(.2,.8,.2,1);
     }
 
     .tree-trunk {
       position: absolute;
-      bottom: 26px;
+      bottom: 32px;
       left: 50%;
       transform: translateX(-50%);
-      width: 30px;
-      height: 96px;
-      background: linear-gradient(180deg, #8b5a2b, #6c431b);
-      border-radius: 12px;
+      width: 32px;
+      height: 104px;
+      background: linear-gradient(180deg, #916134, #6d431d);
+      border-radius: 14px;
       z-index: 2;
+      box-shadow: inset 0 -4px 10px rgba(0,0,0,0.12);
     }
 
-    .tree-base {
+    .tree-base-shadow {
       position: absolute;
-      bottom: 12px;
+      bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
-      width: 130px;
+      width: 140px;
       height: 28px;
-      background: rgba(71, 125, 38, 0.20);
+      border-radius: 50%;
+      background: rgba(56, 95, 30, 0.18);
+      filter: blur(2px);
+      z-index: 0;
+    }
+
+    .ground {
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 56px;
+      background: linear-gradient(180deg, #74cb41, #4f9b2b);
       border-radius: 50%;
       z-index: 0;
-    }
-
-    .grass {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 180px;
-      height: 34px;
-      background: linear-gradient(180deg, #73cb42, #4d9a29);
-      border-radius: 50% 50% 45% 45%;
-      z-index: 0;
-      box-shadow: inset 0 4px 10px rgba(255,255,255,0.15);
+      box-shadow:
+        inset 0 6px 12px rgba(255,255,255,0.14),
+        0 8px 14px rgba(0,0,0,0.08);
     }
 
     .tree-crown {
@@ -238,11 +250,13 @@
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      width: 134px;
-      height: 116px;
+      width: 144px;
+      height: 126px;
       border-radius: 50%;
       z-index: 1;
-      box-shadow: inset 0 -10px 18px rgba(0,0,0,0.08);
+      box-shadow:
+        inset 0 -12px 18px rgba(0,0,0,0.08),
+        inset 0 8px 14px rgba(255,255,255,0.10);
     }
 
     .tree-crown::before,
@@ -254,86 +268,124 @@
     }
 
     .tree-crown::before {
-      width: 96px;
-      height: 96px;
+      width: 108px;
+      height: 108px;
       left: -18px;
-      top: 20px;
+      top: 24px;
     }
 
     .tree-crown::after {
-      width: 96px;
-      height: 96px;
+      width: 108px;
+      height: 108px;
       right: -18px;
-      top: 20px;
+      top: 22px;
     }
+
+    .banana-leaf {
+      position: absolute;
+      width: 72px;
+      height: 26px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #8ce36a, #58ab36);
+      z-index: 2;
+      transform-origin: center;
+      box-shadow: inset 0 -3px 8px rgba(0,0,0,0.08);
+    }
+
+    .banana-leaf.l1 { top: 58px; left: 18px; transform: rotate(-28deg); }
+    .banana-leaf.l2 { top: 50px; right: 18px; transform: rotate(28deg); }
+    .banana-leaf.l3 { top: 76px; left: 52px; transform: rotate(-8deg); }
+    .banana-leaf.l4 { top: 76px; right: 52px; transform: rotate(8deg); }
 
     .fruit {
       position: absolute;
-      font-size: 20px;
+      font-size: 22px;
       z-index: 3;
-      animation: fruitPulse 2.2s ease-in-out infinite;
-      transition: transform 0.25s ease;
+      animation: fruitPulse 2.8s ease-in-out infinite;
+      transition: transform 0.35s ease;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.12));
     }
 
     .tree-visual.collecting .fruit {
-      animation: fruitShake 0.45s ease;
+      animation: fruitShake 0.8s ease;
     }
 
-    .fruit.f1 { top: 38px; left: 48px; animation-delay: 0s; }
-    .fruit.f2 { top: 52px; right: 42px; animation-delay: 0.3s; }
-    .fruit.f3 { top: 76px; left: 35px; animation-delay: 0.6s; }
-    .fruit.f4 { top: 84px; right: 30px; animation-delay: 0.9s; }
-    .fruit.f5 { top: 100px; left: 70px; animation-delay: 1.2s; }
+    .fruit.f1 { top: 42px; left: 54px; animation-delay: 0s; }
+    .fruit.f2 { top: 58px; right: 44px; animation-delay: 0.35s; }
+    .fruit.f3 { top: 86px; left: 36px; animation-delay: 0.7s; }
+    .fruit.f4 { top: 94px; right: 30px; animation-delay: 1.05s; }
+    .fruit.f5 { top: 114px; left: 82px; animation-delay: 1.35s; }
 
     .floating-reward {
       position: absolute;
       left: 50%;
-      top: 55px;
+      top: 82px;
       transform: translateX(-50%);
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 800;
       color: #2f8b1f;
       opacity: 0;
       pointer-events: none;
-      z-index: 5;
+      z-index: 6;
+      text-shadow: 0 2px 8px rgba(255,255,255,0.5);
     }
 
     .floating-reward.show {
-      animation: floatReward 1s ease forwards;
+      animation: floatReward 1.8s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    .tree-title-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
     }
 
     .tree-name {
       font-size: 30px;
       font-weight: 800;
-      margin-top: 4px;
     }
 
-    .tree-count,
-    .tree-reward,
-    .tree-total,
-    .tree-timer {
-      font-size: 18px;
-      color: #4f5f49;
-      margin-top: 4px;
-      text-align: center;
-    }
-
-    .tree-total {
+    .tree-count-badge {
+      background: #eef8dd;
+      color: #3b5b28;
+      font-size: 14px;
       font-weight: 700;
-      color: #355028;
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    .tree-summary {
+      text-align: center;
+      margin-top: 6px;
+      color: #4f5f49;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .tree-summary strong {
+      color: #28411f;
+    }
+
+    .tree-timer {
+      font-size: 16px;
+      color: #5d6b58;
+      margin-top: 6px;
+      text-align: center;
     }
 
     .tree-button,
     .shop-button {
-      margin-top: 12px;
+      margin-top: 14px;
       width: 100%;
       border: none;
-      border-radius: 16px;
-      padding: 14px 16px;
+      border-radius: 18px;
+      padding: 15px 16px;
       font-size: 18px;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease;
+      transition: transform 0.18s ease, opacity 0.18s ease;
     }
 
     .tree-button:active,
@@ -346,11 +398,11 @@
     .tree-button {
       background: linear-gradient(135deg, #5dbb45, #3f972d);
       color: white;
-      box-shadow: 0 6px 14px rgba(63, 151, 45, 0.28);
+      box-shadow: 0 10px 20px rgba(63, 151, 45, 0.26);
     }
 
     .tree-button.bump {
-      animation: buttonBump 0.28s ease;
+      animation: buttonBump 0.42s ease;
     }
 
     .tree-button.waiting {
@@ -362,7 +414,7 @@
     .shop-button {
       background: linear-gradient(135deg, #fff7dd, #ffe8a3);
       color: #5a4300;
-      box-shadow: 0 6px 14px rgba(255, 199, 74, 0.24);
+      box-shadow: 0 8px 16px rgba(255, 199, 74, 0.22);
     }
 
     .shop-top {
@@ -389,13 +441,13 @@
     }
 
     .shop-name {
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 800;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .shop-price {
-      font-size: 16px;
+      font-size: 15px;
       color: #4f5f49;
       margin-top: 4px;
     }
@@ -410,9 +462,9 @@
     }
 
     .footer-note {
-      margin-top: 20px;
+      margin-top: 18px;
       text-align: center;
-      font-size: 14px;
+      font-size: 13px;
       color: rgba(30, 45, 22, 0.72);
     }
 
@@ -422,12 +474,15 @@
 
     .carousel-wrap {
       position: relative;
-      min-height: 500px;
+      min-height: 540px;
       touch-action: pan-y;
     }
 
     .carousel-card {
       width: 100%;
+      opacity: 1;
+      transform: translateX(0);
+      transition: transform 0.4s ease, opacity 0.4s ease;
     }
 
     .carousel-controls {
@@ -460,18 +515,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.48);
+      transition: transform 0.25s ease, background 0.25s ease;
     }
 
     .dot.active {
       background: #2f6e1f;
-      transform: scale(1.15);
+      transform: scale(1.18);
     }
 
     @keyframes sway {
-      0% { transform: rotate(-2deg); }
-      50% { transform: rotate(2deg); }
-      100% { transform: rotate(-2deg); }
+      0% { transform: rotate(-1.7deg); }
+      50% { transform: rotate(1.7deg); }
+      100% { transform: rotate(-1.7deg); }
     }
 
     @keyframes fruitPulse {
@@ -482,42 +538,47 @@
 
     @keyframes fruitShake {
       0% { transform: translateY(0) scale(1); }
-      25% { transform: translateY(-3px) scale(1.08); }
-      50% { transform: translateY(1px) scale(0.98); }
-      75% { transform: translateY(-2px) scale(1.05); }
-      100% { transform: translateY(0) scale(1); }
+      20% { transform: translateY(-4px) rotate(-4deg) scale(1.08); }
+      40% { transform: translateY(1px) rotate(4deg) scale(0.98); }
+      60% { transform: translateY(-3px) rotate(-3deg) scale(1.06); }
+      80% { transform: translateY(1px) rotate(2deg) scale(1.02); }
+      100% { transform: translateY(0) rotate(0) scale(1); }
     }
 
     @keyframes collectBounce {
       0% { transform: scale(1); }
-      30% { transform: scale(1.04); }
-      60% { transform: scale(0.99); }
+      25% { transform: scale(1.05); }
+      50% { transform: scale(0.98); }
+      75% { transform: scale(1.02); }
       100% { transform: scale(1); }
     }
 
     @keyframes buttonBump {
       0% { transform: scale(1); }
-      50% { transform: scale(0.96); }
+      50% { transform: scale(0.95); }
       100% { transform: scale(1); }
     }
 
     @keyframes floatReward {
       0% {
         opacity: 0;
-        transform: translateX(-50%) translateY(8px) scale(0.95);
+        transform: translateX(-50%) translateY(14px) scale(0.92);
       }
-      20% {
+      15% {
+        opacity: 1;
+      }
+      75% {
         opacity: 1;
       }
       100% {
         opacity: 0;
-        transform: translateX(-50%) translateY(-34px) scale(1.06);
+        transform: translateX(-50%) translateY(-58px) scale(1.08);
       }
     }
 
     @keyframes cloudDrift {
       from { transform: translateX(0); }
-      to { transform: translateX(calc(100vw + 220px)); }
+      to { transform: translateX(calc(100vw + 240px)); }
     }
   </style>
 </head>
@@ -564,6 +625,7 @@
     let currentTreeIndex = 0;
     let touchStartX = 0;
     let touchEndX = 0;
+    let isAnimatingSlide = false;
 
     let balance = Number(localStorage.getItem('balance')) || 0;
     let trees = JSON.parse(localStorage.getItem('trees')) || [{ type: 'apple' }];
@@ -577,8 +639,9 @@
         price: 0,
         reward: 0.01,
         cooldownHours: 1,
-        buttonText: 'Собрать яблоки',
-        crown: 'linear-gradient(135deg, #72c94b, #4c9b2d)'
+        buttonText: 'Собрать',
+        crown: 'linear-gradient(135deg, #72c94b, #4c9b2d)',
+        style: 'round'
       },
       orange: {
         emoji: '🍊',
@@ -587,8 +650,9 @@
         price: 10,
         reward: 0.05,
         cooldownHours: 3,
-        buttonText: 'Собрать апельсины',
-        crown: 'linear-gradient(135deg, #78c153, #3f8d2c)'
+        buttonText: 'Собрать',
+        crown: 'linear-gradient(135deg, #78c153, #3f8d2c)',
+        style: 'round'
       },
       grape: {
         emoji: '🍇',
@@ -597,8 +661,9 @@
         price: 30,
         reward: 0.375,
         cooldownHours: 6,
-        buttonText: 'Собрать виноград',
-        crown: 'linear-gradient(135deg, #63b65b, #327f46)'
+        buttonText: 'Собрать',
+        crown: 'linear-gradient(135deg, #64b95f, #34794b)',
+        style: 'grape'
       },
       banana: {
         emoji: '🍌',
@@ -607,8 +672,9 @@
         price: 50,
         reward: 1.66,
         cooldownHours: 12,
-        buttonText: 'Собрать бананы',
-        crown: 'linear-gradient(135deg, #8ad16b, #57a13a)'
+        buttonText: 'Собрать',
+        crown: 'linear-gradient(135deg, #93dc68, #5aaa3a)',
+        style: 'banana'
       },
       lemon: {
         emoji: '🍋',
@@ -617,8 +683,9 @@
         price: 100,
         reward: 10,
         cooldownHours: 24,
-        buttonText: 'Собрать лимоны',
-        crown: 'linear-gradient(135deg, #98d85e, #5fa62f)'
+        buttonText: 'Собрать',
+        crown: 'linear-gradient(135deg, #a1df63, #69b234)',
+        style: 'round'
       }
     };
 
@@ -668,20 +735,38 @@
       }));
     }
 
-    function prevTree() {
+    function changeTree(direction) {
       const grouped = getGroupedTrees();
-      if (grouped.length <= 1) return;
-      currentTreeIndex--;
-      if (currentTreeIndex < 0) currentTreeIndex = grouped.length - 1;
-      renderGarden();
+      if (grouped.length <= 1 || isAnimatingSlide) return;
+
+      isAnimatingSlide = true;
+      const card = document.querySelector('.carousel-card');
+
+      if (card) {
+        card.style.opacity = '0';
+        card.style.transform = `translateX(${direction === 'next' ? '-24px' : '24px'}) scale(0.98)`;
+      }
+
+      setTimeout(() => {
+        if (direction === 'next') {
+          currentTreeIndex++;
+          if (currentTreeIndex >= grouped.length) currentTreeIndex = 0;
+        } else {
+          currentTreeIndex--;
+          if (currentTreeIndex < 0) currentTreeIndex = grouped.length - 1;
+        }
+
+        renderGarden();
+        isAnimatingSlide = false;
+      }, 180);
+    }
+
+    function prevTree() {
+      changeTree('prev');
     }
 
     function nextTree() {
-      const grouped = getGroupedTrees();
-      if (grouped.length <= 1) return;
-      currentTreeIndex++;
-      if (currentTreeIndex >= grouped.length) currentTreeIndex = 0;
-      renderGarden();
+      changeTree('next');
     }
 
     function attachSwipe(element) {
@@ -697,7 +782,7 @@
 
     function handleSwipe() {
       const diff = touchEndX - touchStartX;
-      if (Math.abs(diff) < 50) return;
+      if (Math.abs(diff) < 45) return;
       if (diff < 0) nextTree();
       else prevTree();
     }
@@ -708,7 +793,6 @@
 
       const reward = document.createElement('div');
       reward.className = 'floating-reward';
-      reward.innerText = '';
 
       const visual = document.createElement('div');
       visual.className = 'tree-visual';
@@ -717,26 +801,60 @@
       crown.className = 'tree-crown';
       crown.style.background = info.crown;
 
+      if (info.style === 'grape') {
+        crown.style.width = '138px';
+        crown.style.height = '118px';
+      }
+
       const trunk = document.createElement('div');
       trunk.className = 'tree-trunk';
 
-      const base = document.createElement('div');
-      base.className = 'tree-base';
+      const shadow = document.createElement('div');
+      shadow.className = 'tree-base-shadow';
 
-      const grass = document.createElement('div');
-      grass.className = 'grass';
+      const ground = document.createElement('div');
+      ground.className = 'ground';
 
-      for (let i = 1; i <= 5; i++) {
+      if (info.style === 'banana') {
+        crown.style.width = '96px';
+        crown.style.height = '82px';
+        crown.style.top = '46px';
+
+        for (let i = 1; i <= 4; i++) {
+          const leaf = document.createElement('div');
+          leaf.className = `banana-leaf l${i}`;
+          visual.appendChild(leaf);
+        }
+      }
+
+      const fruitCount = info.style === 'grape' ? 6 : 5;
+
+      for (let i = 1; i <= fruitCount; i++) {
         const fruit = document.createElement('div');
-        fruit.className = `fruit f${i}`;
+        fruit.className = `fruit f${Math.min(i, 5)}`;
         fruit.innerText = info.fruitEmoji;
+
+        if (info.style === 'grape' && i === 6) {
+          fruit.style.top = '118px';
+          fruit.style.left = '98px';
+        }
+
+        if (info.style === 'banana') {
+          fruit.style.fontSize = '20px';
+        }
+
+        if (info.name === 'Лимон') {
+          fruit.style.filter = 'drop-shadow(0 0 6px rgba(255, 235, 130, 0.45))';
+        }
+
         visual.appendChild(fruit);
       }
 
       visual.appendChild(crown);
       visual.appendChild(trunk);
-      scene.appendChild(base);
-      scene.appendChild(grass);
+
+      scene.appendChild(shadow);
+      scene.appendChild(ground);
       scene.appendChild(reward);
       scene.appendChild(visual);
 
@@ -832,23 +950,25 @@
       const visual = treeVisualData.visual;
       const rewardEl = treeVisualData.reward;
 
+      const titleLine = document.createElement('div');
+      titleLine.className = 'tree-title-line';
+
       const name = document.createElement('div');
       name.className = 'tree-name';
       name.innerText = info.name;
 
-      const treeCount = document.createElement('div');
-      treeCount.className = 'tree-count';
-      treeCount.innerText = 'Количество: ' + count;
+      const countBadge = document.createElement('div');
+      countBadge.className = 'tree-count-badge';
+      countBadge.innerText = 'x' + count;
 
-      const income = document.createElement('div');
-      income.className = 'tree-reward';
-      income.innerText = '+' + info.reward + ' TON за 1 дерево';
+      titleLine.appendChild(name);
+      titleLine.appendChild(countBadge);
 
       const totalReward = count * info.reward;
 
-      const total = document.createElement('div');
-      total.className = 'tree-total';
-      total.innerText = 'За сбор всех: +' + totalReward.toFixed(3) + ' TON';
+      const summary = document.createElement('div');
+      summary.className = 'tree-summary';
+      summary.innerHTML = `<strong>+${totalReward.toFixed(3)} TON</strong> за сбор`;
 
       const timer = document.createElement('div');
       timer.className = 'tree-timer';
@@ -881,7 +1001,7 @@
 
           setTimeout(() => {
             render();
-          }, 380);
+          }, 900);
         };
       } else {
         const timeLeft = nextAvailable - now;
@@ -895,10 +1015,8 @@
       }
 
       layout.appendChild(scene);
-      layout.appendChild(name);
-      layout.appendChild(treeCount);
-      layout.appendChild(income);
-      layout.appendChild(total);
+      layout.appendChild(titleLine);
+      layout.appendChild(summary);
       layout.appendChild(timer);
       layout.appendChild(btn);
 
