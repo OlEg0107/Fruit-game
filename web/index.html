@@ -13,13 +13,55 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #dff6b3 0%, #8fd14f 45%, #63b82f 100%);
       color: #1d2a1a;
       min-height: 100vh;
       padding: 18px 16px 40px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.45), transparent 22%),
+        radial-gradient(circle at top right, rgba(255,255,255,0.35), transparent 20%),
+        linear-gradient(180deg, #c9efff 0%, #dff6b3 24%, #8fd14f 58%, #63b82f 100%);
+      overflow-x: hidden;
+    }
+
+    .sky-cloud {
+      position: fixed;
+      background: rgba(255,255,255,0.7);
+      border-radius: 999px;
+      filter: blur(1px);
+      z-index: 0;
+      pointer-events: none;
+      animation: cloudDrift linear infinite;
+    }
+
+    .cloud-1 {
+      width: 110px;
+      height: 34px;
+      top: 24px;
+      left: -120px;
+      animation-duration: 28s;
+    }
+
+    .cloud-2 {
+      width: 90px;
+      height: 28px;
+      top: 84px;
+      left: -100px;
+      animation-duration: 34s;
+      animation-delay: -10s;
+    }
+
+    .cloud-3 {
+      width: 130px;
+      height: 38px;
+      top: 58px;
+      left: -140px;
+      animation-duration: 40s;
+      animation-delay: -18s;
     }
 
     .container {
+      position: relative;
+      z-index: 1;
       max-width: 420px;
       margin: 0 auto;
     }
@@ -40,6 +82,7 @@
       background: rgba(255, 255, 255, 0.95);
       color: #29451d;
       box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+      transition: transform 0.15s ease;
     }
 
     .header-card {
@@ -49,6 +92,7 @@
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
       margin-bottom: 18px;
       text-align: center;
+      backdrop-filter: blur(4px);
     }
 
     .title-row {
@@ -82,6 +126,7 @@
       border-radius: 20px;
       padding: 16px;
       border: 2px solid rgba(120, 176, 64, 0.18);
+      box-shadow: inset 0 2px 10px rgba(255,255,255,0.35);
     }
 
     .balance-label {
@@ -109,6 +154,7 @@
       border-radius: 24px;
       padding: 18px 16px 20px;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+      overflow: hidden;
     }
 
     .shop-card {
@@ -128,29 +174,35 @@
 
     .tree-scene {
       position: relative;
-      width: 230px;
-      height: 230px;
+      width: 250px;
+      height: 240px;
       display: flex;
       justify-content: center;
       align-items: flex-end;
       margin-top: 4px;
+      user-select: none;
     }
 
     .tree-visual {
       position: relative;
-      width: 170px;
-      height: 200px;
+      width: 180px;
+      height: 210px;
       transform-origin: bottom center;
       animation: sway 3.5s ease-in-out infinite;
+      transition: transform 0.25s ease;
+    }
+
+    .tree-visual.collecting {
+      animation: collectBounce 0.5s ease;
     }
 
     .tree-trunk {
       position: absolute;
-      bottom: 22px;
+      bottom: 26px;
       left: 50%;
       transform: translateX(-50%);
-      width: 28px;
-      height: 90px;
+      width: 30px;
+      height: 96px;
       background: linear-gradient(180deg, #8b5a2b, #6c431b);
       border-radius: 12px;
       z-index: 2;
@@ -161,11 +213,24 @@
       bottom: 12px;
       left: 50%;
       transform: translateX(-50%);
-      width: 110px;
-      height: 24px;
-      background: rgba(71, 125, 38, 0.18);
+      width: 130px;
+      height: 28px;
+      background: rgba(71, 125, 38, 0.20);
       border-radius: 50%;
       z-index: 0;
+    }
+
+    .grass {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 34px;
+      background: linear-gradient(180deg, #73cb42, #4d9a29);
+      border-radius: 50% 50% 45% 45%;
+      z-index: 0;
+      box-shadow: inset 0 4px 10px rgba(255,255,255,0.15);
     }
 
     .tree-crown {
@@ -173,8 +238,8 @@
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      width: 128px;
-      height: 110px;
+      width: 134px;
+      height: 116px;
       border-radius: 50%;
       z-index: 1;
       box-shadow: inset 0 -10px 18px rgba(0,0,0,0.08);
@@ -189,15 +254,15 @@
     }
 
     .tree-crown::before {
-      width: 92px;
-      height: 92px;
+      width: 96px;
+      height: 96px;
       left: -18px;
-      top: 18px;
+      top: 20px;
     }
 
     .tree-crown::after {
-      width: 92px;
-      height: 92px;
+      width: 96px;
+      height: 96px;
       right: -18px;
       top: 20px;
     }
@@ -207,6 +272,11 @@
       font-size: 20px;
       z-index: 3;
       animation: fruitPulse 2.2s ease-in-out infinite;
+      transition: transform 0.25s ease;
+    }
+
+    .tree-visual.collecting .fruit {
+      animation: fruitShake 0.45s ease;
     }
 
     .fruit.f1 { top: 38px; left: 48px; animation-delay: 0s; }
@@ -214,6 +284,23 @@
     .fruit.f3 { top: 76px; left: 35px; animation-delay: 0.6s; }
     .fruit.f4 { top: 84px; right: 30px; animation-delay: 0.9s; }
     .fruit.f5 { top: 100px; left: 70px; animation-delay: 1.2s; }
+
+    .floating-reward {
+      position: absolute;
+      left: 50%;
+      top: 55px;
+      transform: translateX(-50%);
+      font-size: 26px;
+      font-weight: 800;
+      color: #2f8b1f;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .floating-reward.show {
+      animation: floatReward 1s ease forwards;
+    }
 
     .tree-name {
       font-size: 30px;
@@ -260,6 +347,10 @@
       background: linear-gradient(135deg, #5dbb45, #3f972d);
       color: white;
       box-shadow: 0 6px 14px rgba(63, 151, 45, 0.28);
+    }
+
+    .tree-button.bump {
+      animation: buttonBump 0.28s ease;
     }
 
     .tree-button.waiting {
@@ -331,7 +422,7 @@
 
     .carousel-wrap {
       position: relative;
-      min-height: 470px;
+      min-height: 500px;
       touch-action: pan-y;
     }
 
@@ -388,9 +479,53 @@
       50% { transform: scale(1.08); }
       100% { transform: scale(1); }
     }
+
+    @keyframes fruitShake {
+      0% { transform: translateY(0) scale(1); }
+      25% { transform: translateY(-3px) scale(1.08); }
+      50% { transform: translateY(1px) scale(0.98); }
+      75% { transform: translateY(-2px) scale(1.05); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    @keyframes collectBounce {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.04); }
+      60% { transform: scale(0.99); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes buttonBump {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.96); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes floatReward {
+      0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px) scale(0.95);
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-34px) scale(1.06);
+      }
+    }
+
+    @keyframes cloudDrift {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(100vw + 220px)); }
+    }
   </style>
 </head>
 <body>
+  <div class="sky-cloud cloud-1"></div>
+  <div class="sky-cloud cloud-2"></div>
+  <div class="sky-cloud cloud-3"></div>
+
   <div class="container">
     <div class="top-bar">
       <button id="navButton" class="nav-button" onclick="toggleScreen()">🛒 Магазин</button>
@@ -431,11 +566,7 @@
     let touchEndX = 0;
 
     let balance = Number(localStorage.getItem('balance')) || 0;
-
-    let trees = JSON.parse(localStorage.getItem('trees')) || [
-      { type: 'apple' }
-    ];
-
+    let trees = JSON.parse(localStorage.getItem('trees')) || [{ type: 'apple' }];
     let lastCollected = JSON.parse(localStorage.getItem('lastCollected')) || {};
 
     const treeTypes = {
@@ -496,7 +627,6 @@
       const hours = Math.floor(totalSeconds / 3600);
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       const seconds = totalSeconds % 60;
-
       return `${hours}ч ${minutes}м ${seconds}с`;
     }
 
@@ -526,12 +656,9 @@
 
     function getGroupedTrees() {
       const groupedTrees = {};
-
       trees.forEach((treeObj) => {
         const type = treeObj.type;
-        if (!groupedTrees[type]) {
-          groupedTrees[type] = 0;
-        }
+        if (!groupedTrees[type]) groupedTrees[type] = 0;
         groupedTrees[type]++;
       });
 
@@ -544,24 +671,16 @@
     function prevTree() {
       const grouped = getGroupedTrees();
       if (grouped.length <= 1) return;
-
       currentTreeIndex--;
-      if (currentTreeIndex < 0) {
-        currentTreeIndex = grouped.length - 1;
-      }
-
+      if (currentTreeIndex < 0) currentTreeIndex = grouped.length - 1;
       renderGarden();
     }
 
     function nextTree() {
       const grouped = getGroupedTrees();
       if (grouped.length <= 1) return;
-
       currentTreeIndex++;
-      if (currentTreeIndex >= grouped.length) {
-        currentTreeIndex = 0;
-      }
-
+      if (currentTreeIndex >= grouped.length) currentTreeIndex = 0;
       renderGarden();
     }
 
@@ -579,17 +698,17 @@
     function handleSwipe() {
       const diff = touchEndX - touchStartX;
       if (Math.abs(diff) < 50) return;
-
-      if (diff < 0) {
-        nextTree();
-      } else {
-        prevTree();
-      }
+      if (diff < 0) nextTree();
+      else prevTree();
     }
 
     function createTreeVisual(info) {
       const scene = document.createElement('div');
       scene.className = 'tree-scene';
+
+      const reward = document.createElement('div');
+      reward.className = 'floating-reward';
+      reward.innerText = '';
 
       const visual = document.createElement('div');
       visual.className = 'tree-visual';
@@ -604,6 +723,9 @@
       const base = document.createElement('div');
       base.className = 'tree-base';
 
+      const grass = document.createElement('div');
+      grass.className = 'grass';
+
       for (let i = 1; i <= 5; i++) {
         const fruit = document.createElement('div');
         fruit.className = `fruit f${i}`;
@@ -614,9 +736,22 @@
       visual.appendChild(crown);
       visual.appendChild(trunk);
       scene.appendChild(base);
+      scene.appendChild(grass);
+      scene.appendChild(reward);
       scene.appendChild(visual);
 
-      return scene;
+      return { scene, visual, reward };
+    }
+
+    function playCollectAnimation(visual, rewardEl, rewardText) {
+      visual.classList.remove('collecting');
+      void visual.offsetWidth;
+      visual.classList.add('collecting');
+
+      rewardEl.classList.remove('show');
+      rewardEl.innerText = rewardText;
+      void rewardEl.offsetWidth;
+      rewardEl.classList.add('show');
     }
 
     function renderShop() {
@@ -627,7 +762,6 @@
         if (type === 'apple') return;
 
         const info = treeTypes[type];
-
         const card = document.createElement('div');
         card.className = 'shop-card';
 
@@ -651,19 +785,16 @@
 
         infoWrap.appendChild(name);
         infoWrap.appendChild(price);
-
         top.appendChild(emoji);
         top.appendChild(infoWrap);
 
         const btn = document.createElement('button');
         btn.className = 'shop-button';
         btn.innerText = `${info.emoji} Купить`;
-
         btn.onclick = () => buyTree(type);
 
         card.appendChild(top);
         card.appendChild(btn);
-
         shopDiv.appendChild(card);
       });
     }
@@ -696,7 +827,10 @@
       const layout = document.createElement('div');
       layout.className = 'tree-layout';
 
-      const scene = createTreeVisual(info);
+      const treeVisualData = createTreeVisual(info);
+      const scene = treeVisualData.scene;
+      const visual = treeVisualData.visual;
+      const rewardEl = treeVisualData.reward;
 
       const name = document.createElement('div');
       name.className = 'tree-name';
@@ -710,9 +844,11 @@
       income.className = 'tree-reward';
       income.innerText = '+' + info.reward + ' TON за 1 дерево';
 
+      const totalReward = count * info.reward;
+
       const total = document.createElement('div');
       total.className = 'tree-total';
-      total.innerText = 'За сбор всех: +' + (count * info.reward).toFixed(3) + ' TON';
+      total.innerText = 'За сбор всех: +' + totalReward.toFixed(3) + ' TON';
 
       const timer = document.createElement('div');
       timer.className = 'tree-timer';
@@ -730,9 +866,22 @@
         btn.innerText = info.emoji + ' ' + info.buttonText;
 
         btn.onclick = () => {
-          balance += count * info.reward;
+          balance += totalReward;
           lastCollected[currentTree.type] = Date.now();
-          render();
+
+          btn.classList.remove('bump');
+          void btn.offsetWidth;
+          btn.classList.add('bump');
+
+          playCollectAnimation(visual, rewardEl, '+' + totalReward.toFixed(3) + ' TON');
+
+          document.getElementById('balance').innerText = balance.toFixed(3) + ' TON';
+          localStorage.setItem('balance', balance);
+          localStorage.setItem('lastCollected', JSON.stringify(lastCollected));
+
+          setTimeout(() => {
+            render();
+          }, 380);
         };
       } else {
         const timeLeft = nextAvailable - now;
@@ -774,9 +923,7 @@
         grouped.forEach((_, index) => {
           const dot = document.createElement('div');
           dot.className = 'dot';
-          if (index === currentTreeIndex) {
-            dot.classList.add('active');
-          }
+          if (index === currentTreeIndex) dot.classList.add('active');
           dots.appendChild(dot);
         });
 
@@ -795,7 +942,6 @@
 
     function render() {
       document.getElementById('balance').innerText = balance.toFixed(3) + ' TON';
-
       renderGarden();
       renderShop();
       updateScreenVisibility();
@@ -824,6 +970,7 @@
     }
 
     render();
+
     setInterval(() => {
       if (currentScreen === 'garden') {
         renderGarden();
